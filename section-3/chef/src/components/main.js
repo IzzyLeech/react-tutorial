@@ -8,10 +8,21 @@ export default function Main () {
     const [recipe, setRecipe] = useState(false)
     const [message, setMessage] = useState("");
     const messageTimeoutRef = useRef(null);
+    const recipeSection = useRef(null)
+
+    useEffect(() => {
+        if (recipe !== "" && recipeSection.current !== null) {
+            recipeSection.current.scrollIntoView({behavior: "smooth"})
+        //     const yChoord = recipeSection.current.getBoundingClientReact().topwindow.scroll({
+        //         top: yChoord,
+        //         behavior: "smooth"
+        //     })
+            }
+    }, [recipe])
 
     async function getRecipe(){
-        const recipeaMarkdown = await getRecipeFromMistral(ingredients)
-        setRecipe(recipeaMarkdown)
+        const recipeMarkdown = await getRecipeFromMistral(ingredients)
+        setRecipe(recipeMarkdown)
     }
 
     function addIngredient(formData) {
@@ -51,7 +62,7 @@ export default function Main () {
     setRecipe(false);
     }
     }, [ingredients, recipe]);
-    
+
 
     return (
         <main>
@@ -73,7 +84,8 @@ export default function Main () {
         <IngredientsList 
           ingredients={ingredients} 
           removeIngredient={removeIngredient} 
-          getRecipe={getRecipe} 
+          getRecipe={getRecipe}
+          recipeSection={recipeSection}
         />
       )}
 
